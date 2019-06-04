@@ -1,6 +1,6 @@
 {
   "name": "srepo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CLI tool to help you manage your OpenAPI (fka Swagger) repo.",
   "main": "lib/index.js",
   "repository": {
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/hexindai/swagger-repo",
   "bin": {
-    "swagger-repo": "./bin/swagger-repo.js"
+    "srepo": "./bin/srepo.js"
   },
   "engines": {
     "node": ">=10.14.0"
