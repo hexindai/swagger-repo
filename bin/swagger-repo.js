@@ -21,9 +21,10 @@ function writeAndLog(filename, contents) {
 
 program
   .command('bundle')
-  .description('Bundles a multi-file OpenAPI definition')
+  .description('Bundles a multi-file OpenAPI spec')
   .option('-b, --basedir <relpath>', 'The output file')
   .option('-o, --outfile <filename>', 'The output file')
+  .option('-s, --static <relpath>', 'The static file')
   .option('-y, --yaml', 'Output YAML(Default is JSON)')
   .action(function(options) {
     const spec = api.bundle({ ...options, verbose: true });
@@ -42,6 +43,7 @@ program
   .command('build')
   .description('Builds the static assets and puts it ')
   .option('-b, --basedir <relpath>', 'The output file')
+  .option('-s, --static <relpath>', 'The static file')
   .option('-o, --outdir <dirname>', 'The output directory, web_deploy by default')
   .action(function(options) {
     const config = api.readConfig();
@@ -49,15 +51,15 @@ program
     const spec = api.bundle({ ...options, verbose: true });
     const json = api.stringify(spec);
     const yaml = api.stringify(spec, { yaml: true });
-    const html = api.compileIndexPage();
+    const html = api.compileIndexPage(options);
 
     const outDir = options.outdir || 'web_deploy';
     fs.removeSync(outDir);
     fs.mkdirpSync(outDir);
-    fs.copySync('web/', outDir, {
+    fs.copySync(options.static || 'web/', outDir, {
       filter: filename => !filename.endsWith('redoc-config.yaml')
     });
-    console.log(`Copied ${chalk.blue('/web')} to ${chalk.blue(outDir)}`);
+    console.log(`Copied ${chalk.blue(options.static || '/web')} to ${chalk.blue(outDir)}`);
     if (config.swaggerUI) {
       fs.copySync(
         path.dirname(require.resolve('swagger-ui-dist')),
@@ -113,7 +115,7 @@ program
       if (err) {
         console.log(chalk.red('Deploy failed: ') + err);
       }
-      console.log(chalk.green('🎉  Deployed successfully!'));
+      console.log(chalk.green('🎉  Deployed uccessfully!'));
       if (options.preview && process.env.TRAVIS_BRANCH) {
         await notifyBranchPreviewFromTravis(process.env.TRAVIS_BRANCH, process.env.TRAVIS_COMMIT);
         console.log('Set Preview status on GitHub');
@@ -123,7 +125,7 @@ program
 
 program
   .command('sync-with-spec')
-  .description('Sync single-file OpenAPI definition with bundle')
+  .description('Sync single-file OpenAPI spec with bundle')
   .option('-b, --basedir <relpath>', 'The output file')
   .arguments('<spec>')
   .action(function(spec, options) {
@@ -148,14 +150,15 @@ program
   .description('Serves a OpenAPI and some tools via the built-in HTTP server')
   .option('-p, --port <port>', 'The server port number')
   .option('-b, --basedir <relpath>', 'The output file')
-  .option('--validate', 'Validate definition on each change')
+  .option('-s, --static <relpath>', 'The static file')
+  .option('--validate', 'Validate spec on each change')
   .action(function(options) {
     const config = api.readConfig();
 
     const app = express();
     app.use(cors());
 
-    app.get('/', api.indexMiddleware);
+    // app.get('/', api.indexMiddleware);
     app.use('/', api.specMiddleware(options));
 
     if (config.swaggerUI) {

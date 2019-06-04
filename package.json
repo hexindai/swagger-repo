@@ -1,11 +1,11 @@
 {
-  "name": "swagger-repo",
-  "version": "2.0.0-rc.11",
+  "name": "srepo",
+  "version": "1.0.0",
   "description": "CLI tool to help you manage your OpenAPI (fka Swagger) repo.",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rebilly/swagger-repo.git"
+    "url": "https://github.com/hexindai/swagger-repo.git"
   },
   "keywords": [
     "API",
@@ -18,14 +18,14 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Rebilly/swagger-repo/issues"
+    "url": "https://github.com/hexindai/swagger-repo/issues"
   },
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --write {bin,lib}/**/*.js"
   },
-  "homepage": "https://github.com/Rebilly/swagger-repo",
+  "homepage": "https://github.com/hexindai/swagger-repo",
   "bin": {
     "swagger-repo": "./bin/swagger-repo.js"
   },
@@ -41,10 +41,10 @@
     "fs-extra": "^7.0.1",
     "gh-pages": "^2.0.1",
     "glob": "^7.0.0",
-    "js-yaml": "^3.5.3",
+    "js-yaml": "^3.13.1",
     "json-pointer": "^0.6.0",
-    "jsonpath": "^1.0.0",
-    "livereload": "^0.7.0",
+    "jsonpath": "^1.0.2",
+    "livereload": "^0.8.0",
     "lodash": "^4.5.0",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.3.0",
@@ -52,7 +52,7 @@
     "require-dir": "^1.0.0",
     "swagger-editor-dist": "^3.6.16",
     "swagger-ui-dist": "^3.20.1",
-    "sway": "^2.0.5"
+    "sway": "^2.0.6"
   },
   "devDependencies": {
     "eslint": "^5.9.0",
